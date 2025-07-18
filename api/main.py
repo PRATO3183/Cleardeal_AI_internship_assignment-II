@@ -3,16 +3,21 @@ from pydantic import BaseModel, EmailStr
 import joblib
 # import re
 
-import sys, os
-sys.path.append(os.path.dirname(__file__))
-from reranker import rerank_score
+import os
+from model.reranker import rerank_score
 
 app = FastAPI()
+
 @app.get("/") # so that the bat file knows where to look.
 def read_root():
     return {"message": "It works!"}
 
-model = joblib.load("model.pkl")
+# model = joblib.load("model.pkl")
+# Load model using absolute path - cuz above not working in my system.
+# model_path = os.path.join(os.path.dirname(__file__), "model.pkl")
+# the above also didnt work
+
+model = joblib.load("model\model.pkl")
 
 class LeadInput(BaseModel):
     email: EmailStr
